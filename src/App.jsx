@@ -1,70 +1,58 @@
-import React, { useState } from "react";
-import { ethers } from "ethers";
+import { useState } from 'react';
+import './App.css';
 
-export default function App() {
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-  const walletAddress = "0xc15a5316B75ab200E0c24688f85ef9612D70bBd8";
-  const amountInEth = "0.01";
+function App() {
+  const [account, setAccount] = useState(null);
+
+  async function connectWallet() {
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        setAccount(accounts[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      alert('MetaMask not detected. Please install MetaMask!');
+    }
+  }
 
   async function buyNFT() {
-    setError(null);
-    setSuccess(null);
-
-    if (!window.ethereum) {
-      setError("MetaMask is not installed. Please install it to continue.");
+    if (!account) {
+      alert("Please connect your wallet first.");
       return;
     }
 
     try {
-      await window.ethereum.request({ method: "eth_requestAccounts" });
-
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-
-      const tx = await signer.sendTransaction({
-        to: walletAddress,
-        value: ethers.utils.parseEther(amountInEth),
+      const tx = await window.ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [{
+          from: account,
+          to: '0xc15a5316B75ab200E0c24688f85ef9612D70bBd8',
+          value: '0x2386F26FC10000' // 0.01 ETH in hex (change if needed)
+        }]
       });
-
-      setSuccess(`Transaction sent! Hash: ${tx.hash}`);
-    } catch (err) {
-      setError(`Transaction failed: ${err.message}`);
+      alert("Transaction sent! TX Hash: " + tx);
+    } catch (error) {
+      console.error(error);
+      alert("Transaction failed.");
     }
   }
 
   return (
-    <div style={{ maxWidth: 400, margin: "40px auto", textAlign: "center" }}>
-      <h1>Your NFT</h1>
-      <img
-        src="/nft.png"
-        alt="NFT Art"
-        style={{ width: "100%", borderRadius: 12, marginBottom: 20 }}
-      />
-      <button
-        onClick={buyNFT}
-        style={{
-          backgroundColor: "#4CAF50",
-          color: "white",
-          border: "none",
-          padding: "15px 32px",
-          fontSize: 16,
-          borderRadius: 8,
-          cursor: "pointer",
-        }}
-      >
-        Buy NFT for 0.01 ETH
-      </button>
-      {error && (
-        <p style={{ color: "red", marginTop: 20 }}>
-          <b>Error:</b> {error}
-        </p>
-      )}
-      {success && (
-        <p style={{ color: "green", marginTop: 20 }}>
-          <b>Success:</b> {success}
-        </p>
-      )}
+    <div className="App" style={{ textAlign: 'center', padding: '20px' }}>
+      <h1>My NFT</h1>
+      <img src="/nft.png" alt="My NFT" style={{ maxWidth: '300px', borderRadius: '10px' }} />
+      <div style={{ marginTop: '20px' }}>
+        {account ? (
+          <p>Connected: {account}</p>
+        ) : (
+          <button onClick={connectWallet}>Connect Wallet</button>
+        )}
+        <button onClick={buyNFT} style={{ marginLeft: '10px' }}>Buy NFT (0.01 ETH)</button>
+      </div>
     </div>
   );
 }
+
+export default App;
