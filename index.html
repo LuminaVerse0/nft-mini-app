@@ -1,12 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NFT Mini App</title>
+    <title>Kim's NFT Viewer</title>
+    <style>
+      body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+      h1 { color: #333; }
+      .nft { border: 1px solid #ccc; margin: 10px; padding: 10px; background: #fff; border-radius: 8px; }
+      img { max-width: 200px; display: block; margin-bottom: 10px; }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <h1>Kim’s NFT Collection</h1>
+    <div id="nfts">Loading NFTs...</div>
+
+    <script>
+      async function loadNFTs() {
+        // 🔹 Replace this with your actual wallet address
+        const wallet = "0x1234567890abcdef1234567890abcdef12345678";
+        
+        const response = await fetch(`/api/getNFTs?wallet=${wallet}&chain=ethereum`);
+        const data = await response.json();
+
+        const container = document.getElementById("nfts");
+        container.innerHTML = "";
+
+        if (!data.data || data.data.length === 0) {
+          container.innerHTML = "<p>No NFTs found for this wallet.</p>";
+          return;
+        }
+
+        data.data.forEach(nft => {
+          const div = document.createElement("div");
+          div.className = "nft";
+          div.innerHTML = `
+            <img src="${nft.metadata?.image || ''}" alt="NFT">
+            <strong>${nft.metadata?.name || "Unnamed NFT"}</strong>
+            <p>${nft.metadata?.description || ""}</p>
+          `;
+          container.appendChild(div);
+        });
+      }
+      loadNFTs();
+    </script>
   </body>
 </html>
