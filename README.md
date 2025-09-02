@@ -1,21 +1,20 @@
-# React + TypeScript + Vite
+# Vision Glasses NFT - Telegram Mini App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a simple Next.js app deployed on Vercel and connected to Telegram as a Mini App.
 
-While this project uses React, Vite supports many popular JS frameworks. [See all the supported frameworks](https://vitejs.dev/guide/#scaffolding-your-first-vite-project).
+## 🚀 How to Deploy
+1. Fork this repo
+2. Go to [Vercel](https://vercel.com)
+3. Import this repo and deploy
+4. In Telegram `@BotFather`:
+   - `/setdomain` → `https://nft-mini-app-sage.vercel.app/`
+   - `/setmenubutton` → attach the Mini App to your bot
 
-## Deploy Your Own
+## 🛒 Features
+- Telegram Mini App integration
+- ETH / BNB / BTC Buy buttons
+- NFT Showcase (Vision Glasses)
 
-Deploy your own Vite project with Vercel.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/examples/tree/main/framework-boilerplates/vite-react&template=vite-react)
-
-_Live Example: https://vite-react-example.vercel.app_
-
-### Deploying From Your Terminal
-
-You can deploy your new Vite project with a single command from your terminal using [Vercel CLI](https://vercel.com/download):
-
-```shell
-$ vercel
-```
+## 🔧 Customization
+- Replace `/public/nft.png` with your NFT image
+- Update `pages/index.js` text to your own project
