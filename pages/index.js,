@@ -1,8 +1,0 @@
-export default function Home() {
-  return (
-    <div style={{ display: "flex", height: "100vh", alignItems: "center", justifyContent: "center", fontSize: "24px" }}>
-      <h1>🚀 Welcome to NFT Mini App</h1>
-      <p>This is your Next.js deployment on Vercel.</p>
-    </div>
-  );
-}
